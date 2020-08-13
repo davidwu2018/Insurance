@@ -24,21 +24,6 @@ namespace Insurance.Web.Controllers
 
         public IActionResult Index()
         {
-            //ContentCategory category = new ContentCategory()
-            //{
-            //    Id = 1,
-            //    CategoryName = "Electronics"
-            //};
-            //_catService.Add(category);
-
-            //Content content = new Content()
-            //{
-            //    Id = 1,
-            //    ContentCategoryId = 1,
-            //    ContentName = "TV",
-            //    Value = 2000
-            //};
-            //_catService.AddContent(content);
 
             var cats = _catService.GetAll();
 
