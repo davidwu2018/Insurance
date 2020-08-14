@@ -26,8 +26,17 @@ namespace Insurance.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Categories = _categoryService.GetContentCategoryAll();
-            ViewBag.Contents = _contentService.GetContentAll();
+            var categories = _categoryService.GetContentCategoryAll();
+            var contents = _contentService.GetContentAll();
+
+            ViewBag.Categories = categories
+                .Select(a => new ContentCategoryListModel
+                {
+                    Id = a.Id,
+                    CategoryName = a.CategoryName,
+                    Contents = contents.Where(w=>w.ContentCategoryId==a.Id).OrderBy(o => o.ContentName),
+                    ContentsTotal = contents.Where(w=>w.ContentCategoryId == a.Id).Sum(s=>s.Value)
+                }).OrderBy(o=>o.CategoryName).ToList();
 
             return View();
         }

@@ -9,6 +9,8 @@ namespace Insurance.Service.RenterContent
     {
         List<Content> GetContentAll();
 
+        List<Content> GetContentsByCategoryId(int categoryId);
+
         Content GetContentById(int contentId);
 
         void Add(Content content);

@@ -27,6 +27,14 @@ namespace Insurance.Service.RenterContent
 
         }
 
+        public List<Content> GetContentsByCategoryId(int categoryId)
+        {
+            using var context = new InsuranceContext();
+
+            return context.Content.Where(w=>w.ContentCategoryId == categoryId).ToList();
+
+        }
+
         public Content GetContentById(int contentId)
         {
             using var context = new InsuranceContext();
