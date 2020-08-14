@@ -19,15 +19,6 @@ namespace Insurance.Service.RenterContent
             context.SaveChanges();
         }
 
-        public void AddContent(Content content)
-        {
-            using var context = new InsuranceContext();
-            var entity = context.Content.Add(content);
-            entity.State = EntityState.Added;
-
-            context.SaveChanges();
-        }
-
         public static void Edit(ContentCategory contentCategory)
         {
             using var context = new InsuranceContext();
@@ -46,19 +37,11 @@ namespace Insurance.Service.RenterContent
             context.SaveChanges();
         }
 
-        public List<ContentCategory> GetAll()
+        public List<ContentCategory> GetContentCategoryAll()
         {
             using var context = new InsuranceContext();
 
             return context.ContentCategory.ToList();
-
-        }
-
-        public List<Content> GetAllContents()
-        {
-            using var context = new InsuranceContext();
-
-            return context.Content.ToList();
 
         }
 

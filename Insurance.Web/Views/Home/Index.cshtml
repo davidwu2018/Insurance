@@ -1,8 +1,90 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Insurance.Data.Models.Content
+@{
+    ViewData["Title"] = "Rental Contents Management";
+
+    var categories = ViewBag.Categories as List<Insurance.Data.Models.ContentCategory>;
+    var contents = ViewBag.Contents as List<Insurance.Data.Models.Content>;
+    var categoryList = ViewBag.Categories;
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Rental Contents</h2>
+
+@if (categories.Any())
+{
+    <form asp-action="AddContent">
+        <table class="table table-responsive-md">
+            <tr>
+                <td><input asp-for="ContentName" class="form-control" /></td>
+                <td><input asp-for="Value" class="form-control" /></td>
+                <td>
+                    <select asp-for="ContentCategoryId" class="form-control" asp-items="@(new SelectList(categoryList, "Id", "CategoryName"))"></select>
+                </td>
+                <td>  <input type="submit" value="Create" class="btn btn-default" /></td>
+                <td align="right"><button class="btn btn-primary add-claim buttonadd" id="btn-addClaim" type="submit" >Add</button></td>
+
+            </tr>
+
+        </table>
+    </form>
+
+    <form asp-action="DeleteContent" id="RemoveClaimForm">
+        <input type="hidden" id="RemoveClaim_UserClaimId" name="contentId" />
+
+        <table class="table table-responsive-md">
+            @foreach (var category in categories.OrderBy(o => o.CategoryName))
+            {
+                <tr>
+                    <td>@category.CategoryName</td>
+                </tr>
+
+                <table class="table table-responsive-md">
+                    @foreach (var content in contents.Where(c => c.ContentCategoryId == category.Id).OrderBy(o => o.ContentName))
+                    {
+                        <tr>
+                            <td width="100"></td>
+                            <td width="200">@content.ContentName</td>
+                            <td width="100">@content.Value</td>
+                            <td align="left"><button class="btn btn-danger remove-claim" data-claim-id="@content.Id" type="button" onclick="removeClaim(@content.Id)">Remove</button></td>
+                        </tr>
+                    }
+                </table>
+
+
+            }
+        </table>
+
+    </form>
+}
+
+
+@section Scripts {
+
+    <script>
+        //$(document).on('click', '#claimList .buttonadd', function () {
+        //    var row = $(this).closest('tr');
+
+        //    var btn = row.find('button');
+        //    btn.attr('disabled', 'disabled');
+        //});
+
+        //function addClaim(claimId) {
+        //    var objID = document.getElementById("AddClaim_ClaimId");
+        //    if (objID) {
+        //        objID.value = claimId;
+        //    }
+        //    AddClaimForm.submit();
+        //}
+
+        function removeClaim(claimId) {
+
+            debugger
+            var objID = document.getElementById("RemoveClaim_UserClaimId");
+            if (objID) {
+                objID.value = claimId;
+            }
+            RemoveClaimForm.submit();
+        }
+
+    </script>
+}

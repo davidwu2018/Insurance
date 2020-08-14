@@ -14,20 +14,42 @@ namespace Insurance.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IContentCategoryService _catService;
+        private readonly IContentCategoryService _categoryService;
+        private readonly IContentService _contentService;
 
-        public HomeController(ILogger<HomeController> logger, IContentCategoryService catService)
+        public HomeController(ILogger<HomeController> logger, IContentCategoryService catService, IContentService contentService)
         {
             _logger = logger;
-            _catService = catService;
+            _categoryService = catService;
+            _contentService = contentService;
         }
 
         public IActionResult Index()
         {
-
-            var cats = _catService.GetAll();
+            ViewBag.Categories = _categoryService.GetContentCategoryAll();
+            ViewBag.Contents = _contentService.GetContentAll();
 
             return View();
+        }
+
+        public IActionResult AddContent(Content content)
+        {
+            _contentService.Add(content);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteContent(int contentId)
+        {
+
+            Content content = _contentService.GetContentById(contentId);
+
+            if (content != null)
+            {
+                _contentService.Delete(content);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

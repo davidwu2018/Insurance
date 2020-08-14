@@ -27,7 +27,7 @@ namespace Insurance.Web
             services.AddControllersWithViews();
 
             services.AddScoped<IContentCategoryService, ContentCategoryService>();
-
+            services.AddScoped<IContentService, ContentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
