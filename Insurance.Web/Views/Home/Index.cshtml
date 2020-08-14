@@ -5,37 +5,22 @@
     var categories = ViewBag.Categories as List<Insurance.Web.Models.ContentCategoryListModel>;
 }
 
-<h2>Rental Contents</h2>
+<h2>Renter Contents</h2>
 
 @if (categories.Any())
 {
-    <form asp-action="AddContent">
-        <table>
-            <tr>
-                <td><input asp-for="ContentName" title="Item Name" class="form-control" /></td>
-                <td width="95"><input asp-for="Value" title="value" class="form-control" /></td>
-                <td>
-                    <select asp-for="ContentCategoryId" class="form-control" asp-items="@(new SelectList(categories, "Id", "CategoryName"))"></select>
-                </td>
-                <td align="right"><button class="btn btn-primary add-content buttonadd" id="btn-addContent" type="submit" >Add</button></td>
-
-            </tr>
-
-        </table>
-    </form>
-
     <form asp-action="DeleteContent" id="RemoveContentForm">
         <input type="hidden" id="RemoveContent_ContentId" name="contentId" />
 
-        <table >
+        <table>
             @foreach (var category in categories)
             {
-            <tr>
-                <td>@category.CategoryName  </td>
-                <td> &nbsp;</td>
-                <td align="right">@string.Format("{0:C0}", category.ContentsTotal)</td>
-            </tr>
-                <table >
+                <tr>
+                    <td>@category.CategoryName  </td>
+                    <td> &nbsp;</td>
+                    <td align="right">@string.Format("{0:C0}", category.ContentTotal)</td>
+                </tr>
+                <table>
                     @foreach (var content in category.Contents.Where(c => c.ContentCategoryId == category.Id))
                     {
                         <tr style="background-color:lightblue">
@@ -47,20 +32,39 @@
                     }
                 </table>
             }
-        <tr>
-            <td> TOTAL </td>
-            <td> &nbsp;</td>
-            <td> @string.Format("{0:C0}", categories.Sum(s => s.ContentsTotal))</td>
-        </tr>
+            <tr></tr>
+            <tr>
+                <td> TOTAL </td>
+                <td> &nbsp;</td>
+                <td> @string.Format("{0:C0}", categories.Sum(s => s.ContentTotal))</td>
+            </tr>
+        </table>
+    </form>
 
+    <form asp-action="AddContent">
+        <table>
+            <tr>
+                <td><input asp-for="ContentName" id="txtItemName" title="Enter Item Name" class="form-control" /></td>
+                <td width="95"><input asp-for="Value" title="Value" class="form-control" /></td>
+                <td>
+                    <select asp-for="ContentCategoryId" class="form-control" asp-items="@(new SelectList(categories, "Id", "CategoryName"))"></select>
+                </td>
+                <td align="right"><button class="btn btn-primary add-content buttonadd" id="btn-addContent" type="submit">Add</button></td>
+
+            </tr>
         </table>
     </form>
 }
 
 @section Scripts {
     <script>
+
+        $(function () {
+            $("#txtItemName").WaterMark();
+        });
+
         function removeContent(contentId) {
-            var choice = confirm("Are you sure?");
+            var choice = confirm("Are you sure you want to remove the item?");
             if (choice) {
                 var objID = document.getElementById("RemoveContent_ContentId");
                 if (objID) {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Insurance.Web.Models;
@@ -13,13 +10,11 @@ namespace Insurance.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IContentCategoryService _categoryService;
         private readonly IContentService _contentService;
 
-        public HomeController(ILogger<HomeController> logger, IContentCategoryService catService, IContentService contentService)
+        public HomeController(IContentCategoryService catService, IContentService contentService)
         {
-            _logger = logger;
             _categoryService = catService;
             _contentService = contentService;
         }
@@ -35,7 +30,7 @@ namespace Insurance.Web.Controllers
                     Id = a.Id,
                     CategoryName = a.CategoryName,
                     Contents = contents.Where(w=>w.ContentCategoryId==a.Id).OrderBy(o => o.ContentName),
-                    ContentsTotal = contents.Where(w=>w.ContentCategoryId == a.Id).Sum(s=>s.Value)
+                    ContentTotal = contents.Where(w=>w.ContentCategoryId == a.Id).Sum(s=>s.Value)
                 }).OrderBy(o=>o.CategoryName).ToList();
 
             return View();
@@ -50,7 +45,6 @@ namespace Insurance.Web.Controllers
 
         public IActionResult DeleteContent(int contentId)
         {
-
             Content content = _contentService.GetContentById(contentId);
 
             if (content != null)

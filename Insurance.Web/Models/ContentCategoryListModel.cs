@@ -14,7 +14,7 @@ namespace Insurance.Web.Models
 
         public IEnumerable<Content> Contents { get; set; }
 
-        public int ContentsTotal { get; set; }
+        public int ContentTotal { get; set; }
 
     }
 }

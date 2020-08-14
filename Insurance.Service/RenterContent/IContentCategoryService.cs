@@ -7,8 +7,6 @@ namespace Insurance.Service.RenterContent
 {
     public interface IContentCategoryService
     {
-        void Add(ContentCategory contentCategory);
-
         List<ContentCategory> GetContentCategoryAll();
 
     }
